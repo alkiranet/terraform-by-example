@@ -20,3 +20,5 @@ terraform plan -generate-config-out=main.tf
 # Complete Import
 terraform apply
 ```
+
+:warning: Although you can _import_ infrastructure, it is not always a good idea. Given Terraform's _declarative_ nature, you are bound to run into configuration differences between the Terraform code being _imported_ and/or _generated_, and the Terraform code itself. It is usually a good practice to only _import_ resources in **one-off scenarios**, and not make it part of a larger strategy.
