@@ -1,0 +1,55 @@
+---
+
+# define pipeline stages
+stages:
+  - validate
+  - plan
+  - apply
+
+# set default vars
+variables:
+  TF_VERSION: "1.1.0"
+  AWS_DEFAULT_REGION: "us-east-2"
+  TF_CLI_CONFIG_FILE: "$CI_PROJECT_DIR/.terraformrc"
+
+# create .terraformrc and inject Terraform Cloud API token to authenticate service
+before_script:
+  - echo "credentials \"app.terraform.io\" { token = \"$TF_API_TOKEN\" }" > $TF_CLI_CONFIG_FILE
+  - terraform version
+  - terraform init
+
+# validate configuration
+terraform-validate:
+  image: 
+    name: hashicorp/terraform:${TF_VERSION}
+    entrypoint: [""]
+  stage: validate
+  script:
+    - terraform validate
+  only:
+    - merge_requests
+    - main
+
+# generate plan
+terraform-plan:
+  image: 
+    name: hashicorp/terraform:${TF_VERSION}
+    entrypoint: [""]
+  stage: plan
+  script:
+    - terraform plan
+  only:
+    - merge_requests
+    - main
+
+# apply configuration
+terraform-apply:
+  image: 
+    name: hashicorp/terraform:${TF_VERSION}
+    entrypoint: [""]
+  stage: apply
+  script:
+    - terraform apply -auto-approve
+  only:
+    - main
+...
