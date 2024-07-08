@@ -6,6 +6,7 @@
 *tfplan*
 *.tfstate
 *.tfstate.*
+*.terraform
 
 # Crash log files
 crash.log
@@ -37,3 +38,6 @@ terraform.rc
 
 # .vscode
 *vscode*
+
+# Authentication & Provider files
+auth.tf
